@@ -14,6 +14,7 @@
     "@visactor/vtable-editors": "^1.18.6",
     "big.js": "^7.0.1",
     "lodash-es": "^4.17.21",
+    "q": "link:",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

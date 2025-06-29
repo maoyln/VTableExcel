@@ -1,8 +1,8 @@
 /*
  * @Author: maoyl maoyl@glodon.com
  * @Date: 2025-06-27 22:12:11
- * @LastEditors: maoyl maoyl@glodon.com
- * @LastEditTime: 2025-06-29 21:58:48
+ * @LastEditors: maoyln maoyl_yx@163.com
+ * @LastEditTime: 2025-06-29 22:59:49
  * @FilePath: /vtable-excel/eslint.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,10 +11,12 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
-import { globalIgnores } from 'eslint/config'
+import {
+  globalIgnores
+} from 'eslint/config'
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  // globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
