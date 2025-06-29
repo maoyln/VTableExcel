@@ -4,7 +4,7 @@ const TOKEN_NUMBER = 'number'
 const TOKEN_OPERATOR = 'operator'
 const TOKEN_IDENTIFIER = 'identifier'
 const TOKEN_STRING = 'string'
-const TOKEN_BOOLEARN = 'boolean'
+const TOKEN_BOOLEAN = 'boolean'
 const TOKEN_EOF = 'eof'
 const TOKEN_ERROR = 'error'
 
@@ -202,7 +202,7 @@ class express {
     if (this.isBoolean(curOperand.value)) {
       this.addOperand({
         value: curOperand.value === 'true',
-        type: TOKEN_BOOLEARN
+        type: TOKEN_BOOLEAN
       } as Token, operandStack)
     } else {
       this.addOperand(curOperand, operandStack)

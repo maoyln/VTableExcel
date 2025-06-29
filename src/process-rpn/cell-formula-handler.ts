@@ -2,9 +2,9 @@
  * 单元格公式处理器 - 只处理单个单元格，不处理整个数据源
  */
 import RPN from './index'
+import type { RecordType } from '../types/type'
 
 // 从records中提取指定单元格的值
-type RecordType = Record<string, string | number | undefined>
 
 function getCellValueFromRecords(records: RecordType[], cellRef: string, excelColToField: Record<string, string> = {}): string | number {
   const match = cellRef.match(/^([A-Z]+)(\d+)$/i)

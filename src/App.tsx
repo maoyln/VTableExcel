@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-// import VTableView from './VTableView/VTableView';
 import EditableVTable from './EditableVTable/EditableVTable';
 
 interface Column {
@@ -15,37 +14,29 @@ interface RecordType {
 }
 
 const columns: Column[] = [
-  { title: '序号', field: 'id' },
-  { title: '姓名', field: 'name', editor: 'input' },
-  { title: '性别', field: 'gender' },
-  { title: '生日', field: 'birthday', editor: 'date' },
-  { title: '地址', field: 'address', editor: 'textarea' },
-  { title: '部门', field: 'department', editor: 'input' },
-  { title: '职位', field: 'position', editor: 'input' },
-  { title: '电话', field: 'phone', editor: 'input' },
-  { title: '邮箱', field: 'email', editor: 'input' },
-  { title: '工号', field: 'jobId', editor: 'input' },
-  { title: '备注', field: 'remark', editor: 'textarea' },
-  { title: '工资', field: 'salary', editor: 'input' },
-  { title: '奖金', field: 'bonus', editor: 'input' },
-  { title: '总计', field: 'total', editor: 'input', width: 200 },
+  { title: '序号(A)', field: 'id', width: 100 },
+  { title: '姓名(B)', field: 'name', editor: 'input', width: 100 },
+  { title: '数据(C)', field: 'testData', editor: 'input', width: 100 },
+  { title: '数据(D)', field: 'testData2', editor: 'input', width: 100 },
+  { title: '数据(E)', field: 'testData3', editor: 'input', width: 100 },
+  { title: '数据(F)', field: 'testData4', editor: 'input', width: 100 },
+  { title: '数据(G)', field: 'testData5', editor: 'input', width: 100 },
+  { title: '数据(H)', field: 'testData6', editor: 'input', width: 100 },
+  { title: '数据(I)', field: 'testData7', editor: 'input', width: 100  },
+  { title: '测试计算(J)', field: 'total', editor: 'input', width: 200 },
 ];
 
-const myRecords: RecordType[] = Array.from({ length: 10 }, (_, i) => ({
+const myRecords: RecordType[] = Array.from({ length: 100000 }, (_, i) => ({
   id: `${i + 1}`,
-  name: `maoyl${i + 1}`,
-  gender: i % 2 === 0 ? '男' : '女',
-  birthday: `199${i % 10}-01-01`,
-  address: `地址${i + 1}`,
-  department: `部门${(i % 5) + 1}`,
-  position: '=SUM(1,2,3)',
-  phone: `1380000${i}`,
-  email: `maoyl${i + 1}@mail.com`,
-  jobId: `JID${i + 1}`,
-  remark: '',
-  salary: 1000 + i,
-  bonus: 100 + i,
-  total: '=L' + (i + 1) + '+M' + (i + 1),
+  name: `${i + 1}`,
+  testData: i + 11,
+  testData2: i + 22,
+  testData3: i + 103,
+  testData4: i + 1004,
+  testData5: i + 10005,
+  testData6: i + 10006,
+  testData7: i + 10007,
+  total: '=H' + (i + 1) + '+I' + (i + 1),
 }));
 
 function getExcelColToField(columns: Column[]): Record<string, string> {
@@ -69,8 +60,6 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <p>vtable 表格公式演示（C3 = SUM(B4:B9)）</p>
-      {/* <VTableView records={records} columns={columns} width={600} height={400} /> */}
       <EditableVTable
         columns={columns}
         records={records}
@@ -83,7 +72,7 @@ const App: React.FC = () => {
         }}
         style={{
           width: 1400,
-          height: 1000,
+          height: 800,
         }}
       />
     </div>

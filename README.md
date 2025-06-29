@@ -1,69 +1,99 @@
-# React + TypeScript + Vite
+# VTable单元格计算
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 加法
 
-Currently, two official plugins are available:
+- =1+2+3+4
+- =3+4+5+6
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- =D1+E2+F2+G2
+- =D1+E2+F2+10
 
-## Expanding the ESLint configuration
+## 减法
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- =10-4-5
+- = 35-5-3
+- = 35-(5-3)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- =D10-10-E3
+- =D10-10-(E3 - 6)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 乘法
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- =2*4*5
+- = 5*5*3
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- = A1*A3*C4
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 除法
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- =2/4/5
+- = 5/5/3
+
+- =A3/A4
+- =A3/2
+
+## 混合算法
+
+- =(D10 + 10)* A6 / 10
+- =F10 + F2 / D1 - 10 + 20 * G1
+
+## 求和
+
+- =SUM(1,2,3,4,5)
+- =SUM(1,D2,F3,4,E5)
+- =SUM(C1:C10)
+- =SUM(C1:D10)
+- =SUM(C1:C5, D10)
+- =SUM(C1:C5, D10:D20)
+- =SUM(C1:C5, D10:D20, 10)
+- =SUM(C1, D10:D20, 10)
+- =SUM(C1:C2,10)
+- 等等
+
+## 平均值
+
+- =AVERAGE(1,2,3,4,5)
+- =AVERAGE(1,D2,F3,4,E5)
+- =AVERAGE(C1:C10)
+- =AVERAGE(C1:D10)
+- =AVERAGE(C1:C5, D10)
+- =AVERAGE(C1:C5, D10:D20)
+- =AVERAGE(C1:C5, D10:D20, 10)
+- =AVERAGE(C1, D10:D20, 10)
+- =AVERAGE(C1:C2,10)
+
+## 总个数
+
+- =COUNT(1,2,3,4,5)
+- =COUNT(1,D2,F3,4,E5)
+- =COUNT(C1:C10)
+- =COUNT(C1:D10)
+- =COUNT(C1:C5, D10)
+- =COUNT(C1:C5, D10:D20)
+- =COUNT(C1:C5, D10:D20, 10)
+- =COUNT(C1, D10:D20, 10)
+- =COUNT(C1:C2,10)
+
+## 最大值
+
+- =MAX(1,2,3,4,5)
+- =MAX(1,D2,F3,4,E5)
+- =MAX(C1:C10)
+- =MAX(C1:D10)
+- =MAX(C1:C5, D10)
+- =MAX(C1:C5, D10:D20)
+- =MAX(C1:C5, D10:D20, 10)
+- =MAX(C1, D10:D20, 10)
+- =MAX(C1:C2,10)
+
+## 最小值
+
+- =MIN(1,2,3,4,5)
+- =MIN(1,D2,F3,4,E5)
+- =MIN(C1:C10)
+- =MIN(C1:D10)
+- =MIN(C1:C5, D10)
+- =MIN(C1:C5, D10:D20)
+- =MIN(C1:C5, D10:D20, 10)
+- =MIN(C1, D10:D20, 10)
+- =MIN(C1:C2,10)
