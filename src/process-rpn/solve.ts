@@ -1,8 +1,13 @@
-import { get, set } from 'lodash-es'
-import operation from './operation'
-import type { NumericLike } from './operation'
-import * as globalFunction from './global-func'
-import { isCellReference, isRangeReference, generateCellRange, cellToReference } from './excel-utils'
+import { get, set } from "lodash-es";
+import operation from "./operation";
+import type { NumericLike } from "./operation";
+import * as globalFunction from "./global-func";
+import {
+  isCellReference,
+  isRangeReference,
+  generateCellRange,
+  cellToReference,
+} from "./excel-utils";
 
 export type Token = {
   type: string;
@@ -26,13 +31,19 @@ class Solve {
     this._variableMap = {};
     this._cellData = {}; // 存储单元格数据
     // 追加默认变量函数
-    for (const v of Object.keys(globalFunction) as (keyof typeof globalFunction)[]) {
+    for (const v of Object.keys(
+      globalFunction
+    ) as (keyof typeof globalFunction)[]) {
       const fn = globalFunction[v] as [string, (...args: unknown[]) => unknown];
       this.putVariable(...fn);
     }
   }
 
-  transformOperator(left: { value: NumericLike }, right: { value: NumericLike }, data: { value: string }): number {
+  transformOperator(
+    left: { value: NumericLike },
+    right: { value: NumericLike },
+    data: { value: string }
+  ): number {
     const value = data.value;
     return operation?.[value](left?.value, right?.value);
   }
@@ -53,7 +64,7 @@ class Solve {
       for (const cell of cells) {
         const cellRef = cellToReference(cell.col, cell.row);
         const value = this.getCellValue(cellRef);
-        if (typeof value === 'number' || !isNaN(parseFloat(value as string))) {
+        if (typeof value === "number" || !isNaN(parseFloat(value as string))) {
           values.push(parseFloat(value as string));
         }
       }
@@ -78,7 +89,11 @@ class Solve {
       operator: (data: unknown) => {
         right = _s.pop();
         left = _s.pop();
-        const result = this.transformOperator(left as { value: NumericLike }, right as { value: NumericLike }, data as { value: string });
+        const result = this.transformOperator(
+          left as { value: NumericLike },
+          right as { value: NumericLike },
+          data as { value: string }
+        );
         _s.push({ value: result });
       },
       identifier: (data: unknown) => {
@@ -96,7 +111,7 @@ class Solve {
           } else {
             _s.push({ value: callee?.[0] || callee || _var });
           }
-        } else if (typeof _v === 'function') {
+        } else if (typeof _v === "function") {
           const _args: unknown[] = [];
           for (let i = 0; i < args.length; i++) {
             const evaluatedArg = this.evaluate(args[i] as Token[]);
@@ -116,20 +131,20 @@ class Solve {
             const result = _v.apply(this, processedArgs);
             _s.push({ value: result });
           } catch (error) {
-            console.error('函数执行错误:', error);
+            console.error("函数执行错误:", error);
             _s.push({ value: 0 });
           }
         } else {
           _s.push(_var);
         }
-      }
+      },
     };
     for (let i = 0; i < expr.length; i++) {
       const _expr = expr[i];
       if (typeHandleMap[_expr.type]) {
         typeHandleMap[_expr.type](_expr);
       } else {
-        console.log('未找到处理函数:', _expr.type);
+        console.log("未找到处理函数:", _expr.type);
       }
     }
     if (_s.length === 1) {
@@ -171,4 +186,4 @@ class Solve {
   }
 }
 
-export default new Solve()
+export default new Solve();
