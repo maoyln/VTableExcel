@@ -54,6 +54,7 @@ function getExcelColToField(columns: Column[]): Record<string, string> {
 }
 
 const excelColToField = getExcelColToField(columns);
+console.log(excelColToField, 'excelColToField');
 
 const App: React.FC = () => {
   const [records, setRecords] = useState<RecordType[]>(myRecords);

@@ -115,6 +115,7 @@ export function calculateCellFormulaOptimized(
 
     // 3. 去重并获取每个单元格的值
     const uniqueCellRefs = [...new Set(allCellRefs)];
+    console.log(uniqueCellRefs, 'uniqueCellRefs');
     const cellData: Record<string, string | number> = {};
 
     uniqueCellRefs.forEach((cellRef) => {
@@ -124,6 +125,8 @@ export function calculateCellFormulaOptimized(
         excelColToField
       );
     });
+
+    console.log(cellData, 'cellData');
 
     // 4. 设置到RPN计算器并计算
     RPN.setCellDataBatch(cellData);
