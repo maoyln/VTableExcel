@@ -11,11 +11,30 @@ function getCellValueFromRecords(
   cellRef: string,
   excelColToField: Record<string, string> = {}
 ): string | number {
+  // console.log(records, 'records');
+  // console.log(cellRef, 'cellRef');
+  // console.log(excelColToField, 'excelColToField');
+  /**
+   * 这段代码使用 正则表达式 来解析类似 "A1"、"B23"、"AA42" 这样的 单元格引用字符串（常见于 Excel 或表格计算场景），将其拆分为：
+   * 字母部分（列名，如 "A", "B", "AA"）
+   * 数字部分（行号，如 "1", "23", "42"）
+   */
   const match = cellRef.match(/^([A-Z]+)(\d+)$/i);
+  /**
+   * B42返回值类似于：
+   * [
+   *  "B42",       // 完整匹配的字符串
+   *  "B",        // 捕获组1（字母部分）
+   *  "42",        // 捕获组2（数字部分）
+   *  index: 0,   // 匹配开始的索引
+   *  input: "B42" // 原始输入字符串
+   * ]
+   */
+  // console.log(match, 'match');
   if (!match) return 0;
 
-  const col = match[1].toUpperCase();
-  const row = parseInt(match[2]);
+  const col = match[1].toUpperCase(); // 列名
+  const row = parseInt(match[2]); // 行号
 
   const record = records[row - 1]; // 数组索引从0开始
   if (!record) return 0;
@@ -73,13 +92,19 @@ function expandRange(startRef: string, endRef: string): string[] {
   const endRow = parseInt(endRowMatch[0]);
   const startColNum = columnToNumber(startCol);
   const endColNum = columnToNumber(endCol);
+  // console.log(startColNum, 'startColNum');
+  // console.log(endColNum, 'endColNum');
   const expanded: string[] = [];
   for (let colNum = startColNum; colNum <= endColNum; colNum++) {
+    // console.log(colNum, 'colNum');
     const colLetter = numberToColumn(colNum);
+    // console.log(colLetter, 'colLetter');
+
     for (let row = startRow; row <= endRow; row++) {
       expanded.push(`${colLetter}${row}`);
     }
   }
+  console.log(expanded, 'expanded');
   return expanded;
 }
 
@@ -115,7 +140,7 @@ export function calculateCellFormulaOptimized(
 
     // 3. 去重并获取每个单元格的值
     const uniqueCellRefs = [...new Set(allCellRefs)];
-    console.log(uniqueCellRefs, 'uniqueCellRefs');
+    // console.log(uniqueCellRefs, 'uniqueCellRefs');
     const cellData: Record<string, string | number> = {};
 
     uniqueCellRefs.forEach((cellRef) => {
@@ -124,13 +149,16 @@ export function calculateCellFormulaOptimized(
         cellRef,
         excelColToField
       );
+      // console.log(cellData[cellRef], 'cellData[cellRef]');
     });
 
-    console.log(cellData, 'cellData');
+    // console.log(cellData, 'cellData');
 
     // 4. 设置到RPN计算器并计算
-    RPN.setCellDataBatch(cellData);
-    const result = RPN.calculate(formula.slice(1));
+    RPN.setCellDataBatch(cellData); // 批量设置单元格数据（保存到RPN类似于map对象中）
+    const result = RPN.calculate(formula.slice(1)); // 去掉开头的 "=" 符号，进行计算
+    console.log(formula.slice(1), 'formula.slice(1)');
+    console.log(result, 'result');
 
     return result as string | number;
   } catch (error) {

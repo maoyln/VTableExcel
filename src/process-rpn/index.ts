@@ -23,7 +23,7 @@ class RPN {
   calculate(expr: string): unknown {
     try {
       const _expr = this.express(expr);
-      // console.log("expr", _expr)
+      console.log("expr", _expr)
       // debugger
       return (solve.evaluate(_expr as Token[]) as { value: string })?.value;
     } catch (e) {

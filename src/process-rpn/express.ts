@@ -1,22 +1,22 @@
 import type { Token } from './solve';
 
-const TOKEN_NUMBER = 'number'
-const TOKEN_OPERATOR = 'operator'
-const TOKEN_IDENTIFIER = 'identifier'
-const TOKEN_STRING = 'string'
+const TOKEN_NUMBER = 'number' // 数字
+const TOKEN_OPERATOR = 'operator' // 操作符
+const TOKEN_IDENTIFIER = 'identifier' // 标识符（变量、函数、对象属性、对象方法）H1、SUM、A1:A5等等
+const TOKEN_STRING = 'string' // 字符串
 const TOKEN_BOOLEAN = 'boolean'
-const TOKEN_EOF = 'eof'
+const TOKEN_EOF = 'eof' // 结束符
 const TOKEN_ERROR = 'error'
 
-function isOperator (c: string) { return /[+\-x÷*/^%=()><!:]/.test(c) }
-function isOperationalCharacter (c: string) { return /[+\-x÷*/^%=(]/.test(c) }
-function isDigit (c: string) { return /[0-9]/.test(c) }
-function isAlphaOrLine (c: string) { return /[a-zA-Z_$]/.test(c) }
-function isAlphaOrLineOrintegerber (c: string) { return /[0-9a-zA-Z_${}]/.test(c) }
-function isWhiteSpace (c: string) { return /\s/.test(c) }
-function isString (c: string) { return /[^"']/.test(c) }
-function isQuotes (c: string) { return /"|'/.test(c) }
-function isComma (c: string) { return /,/.test(c) }
+function isOperator (c: string) { return /[+\-x÷*/^%=()><!:]/.test(c) } // 操作符字符
+function isOperationalCharacter (c: string) { return /[+\-x÷*/^%=(]/.test(c) } // 操作符字符
+function isDigit (c: string) { return /[0-9]/.test(c) } // 数字字符
+function isAlphaOrLine (c: string) { return /[a-zA-Z_$]/.test(c) } // 字母或下划线字符
+function isAlphaOrLineOrintegerber (c: string) { return /[0-9a-zA-Z_${}]/.test(c) } // 字母、下划线或数字字符
+function isWhiteSpace (c: string) { return /\s/.test(c) } // 空白字符
+function isString (c: string) { return /[^"']/.test(c) } // 字符串字符，排除引号
+function isQuotes (c: string) { return /"|'/.test(c) } // 引号字符
+function isComma (c: string) { return /,/.test(c) } // 逗号字符
 
 // 获取运算符优先级，数值越大，优先级越低
 function getPriority (op: { value: string }): number {
@@ -71,6 +71,8 @@ class express {
       callee: operand.callee,
       args: operand.args
     })
+
+    console.log(JSON.stringify(operandStack), operandStack, 'operandStack');
   }
 
   // 新增运算符
@@ -79,12 +81,18 @@ class express {
       type: operator.type,
       value: operator.value
     })
+    console.log(JSON.stringify(operatorStack), operatorStack, 'operatorStack');
+
   }
 
+  /**
+   * 解析表达式 
+   * @returns 
+   */
   _expr () {
-    let curToken: Token | null = null
-    let curOperand: Token | null = null
-    let curOperator: Token | null = null
+    let curToken: Token | null = null // 当前token
+    let curOperand: Token | null = null // 当前操作数
+    let curOperator: Token | null = null // 当前操作符
     // 操作数推栈
     const operandStack: Token[] = []
     // 正括号数量
@@ -92,25 +100,31 @@ class express {
     // 操作符推栈
     const operatorStack: Token[] = []
     while ((curToken = this._next()).type !== TOKEN_EOF) {
+      console.log(JSON.stringify(curToken), 'curToken');
       const { type, value } = curToken
+      console.log(type, 'type');
+      console.log(value, 'value');
       if (type === TOKEN_NUMBER) {
+        // 如果是数据则数据压栈
         curOperand = curToken
         this.addOperand(curOperand, operandStack)
+        console.log(this.currentToken, 'this.currentToken');
       } else if (type !== TOKEN_STRING && value === '(') { // 不包含函数的 函数内部自己处理
         qcount.length++ // 运算符括号计数
-        curOperator = curToken
-        this.addOperator(curOperator, operatorStack)
+        curOperator = curToken // 当前操作符
+        this.addOperator(curOperator, operatorStack) // 运算符入栈
       } else if (type !== TOKEN_STRING && qcount.length === 0 && curToken.value === ')') { // 没有括号 并且当前操作符是 反括号 代表是函数结束
         break
       } else if (type !== TOKEN_STRING && value === ')') { // 如过是反括号操作符结束
         this.handleParenthesis(operatorStack, operandStack, qcount)
-      } else if (type === TOKEN_STRING) { // 如过是字符串 直接放到操作符中
-        this.addOperand(curToken, operandStack)
+      } else if (type === TOKEN_STRING) { // 如果是字符串
+        this.addOperand(curToken, operandStack) // 字符串直接入栈
       } else if (type === TOKEN_IDENTIFIER) { // 如果是标识符
-        this.handleIdentifier(curOperand, curToken, operandStack)
+        this.handleIdentifier(curOperand, curToken, operandStack) // 标识符处理
       } else {
         this.handleOperator(curOperator, curToken, operatorStack, operandStack)
       }
+
     }
     // 转换完成,若运算符堆栈中尚有运算符时,
     // 则依序取出运算符到操作数堆栈,直到运算符堆栈为空
@@ -174,15 +188,21 @@ class express {
     }
   }
 
-  // 处理标识符
+
+  /**
+   * 处理标识符
+   * @param curOperand 
+   * @param curToken 
+   * @param operandStack 
+   */
   handleIdentifier (curOperand: Token | null, curToken: Token, operandStack: Token[]): void {
-    curOperand = curToken
-    curOperand.callee = []
-    curOperand.args = []
-    curOperand.callee.push(String(curToken.value))
+    curOperand = curToken // 当前操作数
+    curOperand.callee = [] // 函数名或变量名
+    curOperand.args = [] // 函数参数
+    curOperand.callee.push(String(curToken.value)) // 将标识符的值作为函数名或变量名
     while (true) {
-      const cIndex = this.charIndex
-      const nextToken = this._next()
+      const cIndex = this.charIndex // 记录当前字符索引
+      const nextToken = this._next() // 获取下一个token
       if (nextToken.type === TOKEN_IDENTIFIER) {
         curOperand.callee.push(String(nextToken.value))
       } else if (nextToken.value === '(') {

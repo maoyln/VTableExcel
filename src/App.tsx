@@ -26,7 +26,7 @@ const columns: Column[] = [
   { title: "测试计算(J)", field: "total", editor: "input", width: 200 },
 ];
 
-const myRecords: RecordType[] = Array.from({ length: 100000 }, (_, i) => ({
+const myRecords: RecordType[] = Array.from({ length: 1 }, (_, i) => ({
   id: `${i + 1}`,
   name: `${i + 3}`,
   testData: i + 11,
@@ -54,7 +54,7 @@ function getExcelColToField(columns: Column[]): Record<string, string> {
 }
 
 const excelColToField = getExcelColToField(columns);
-console.log(excelColToField, 'excelColToField');
+// console.log(excelColToField, 'excelColToField');
 
 const App: React.FC = () => {
   const [records, setRecords] = useState<RecordType[]>(myRecords);

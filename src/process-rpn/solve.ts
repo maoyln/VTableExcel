@@ -73,6 +73,7 @@ class Solve {
     return [rangeRef];
   }
 
+  // 逆波兰表达式求值
   evaluate(expr: Token[]): unknown {
     let left: unknown, right: unknown;
     const _s: unknown[] = [];
@@ -171,6 +172,7 @@ class Solve {
   // 批量设置单元格数据
   setCellDataBatch(data: Record<string, unknown>): void {
     for (const [cellRef, value] of Object.entries(data)) {
+      // console.log(cellRef, value, 'setCellDataBatch');
       this.setCellData(cellRef, value);
     }
   }
