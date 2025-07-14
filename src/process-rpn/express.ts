@@ -72,7 +72,7 @@ class express {
       args: operand.args
     })
 
-    console.log(JSON.stringify(operandStack), operandStack, 'operandStack');
+    // console.log(JSON.stringify(operandStack), operandStack, 'operandStack');
   }
 
   // 新增运算符
@@ -81,8 +81,7 @@ class express {
       type: operator.type,
       value: operator.value
     })
-    console.log(JSON.stringify(operatorStack), operatorStack, 'operatorStack');
-
+    // console.log(JSON.stringify(operatorStack), operatorStack, 'operatorStack');
   }
 
   /**
@@ -100,15 +99,15 @@ class express {
     // 操作符推栈
     const operatorStack: Token[] = []
     while ((curToken = this._next()).type !== TOKEN_EOF) {
-      console.log(JSON.stringify(curToken), 'curToken');
+      // console.log(JSON.stringify(curToken), 'curToken');
       const { type, value } = curToken
-      console.log(type, 'type');
-      console.log(value, 'value');
+      // console.log(type, 'type');
+      // console.log(value, 'value');
       if (type === TOKEN_NUMBER) {
         // 如果是数据则数据压栈
         curOperand = curToken
         this.addOperand(curOperand, operandStack)
-        console.log(this.currentToken, 'this.currentToken');
+        // console.log(this.currentToken, 'this.currentToken');
       } else if (type !== TOKEN_STRING && value === '(') { // 不包含函数的 函数内部自己处理
         qcount.length++ // 运算符括号计数
         curOperator = curToken // 当前操作符
@@ -124,7 +123,6 @@ class express {
       } else {
         this.handleOperator(curOperator, curToken, operatorStack, operandStack)
       }
-
     }
     // 转换完成,若运算符堆栈中尚有运算符时,
     // 则依序取出运算符到操作数堆栈,直到运算符堆栈为空
@@ -242,7 +240,7 @@ class express {
       if (isDigit(c)) {
         return this.matchDigit(c)
       } else if (isQuotes(c)) {
-        return this.matchSting(c)
+        return this.matchString(c)
       } else if (isComma(c)) {
         return this.matchComma()
       } else if (isWhiteSpace(c)) {
@@ -268,8 +266,12 @@ class express {
     let number = c
     // let decimalPlaces = ''//如果是浮点数，先用此数记录小数后的部分
     const isFloat = false
+    // console.log(c, 'c');
+    // console.log(this.charIndex, 'this.charIndex');
     while (this.charIndex < expression.length) {
       c = expression[this.charIndex]
+      // console.log(c, 'c');
+      // console.log(isDigit(c), 'isDigit(c)');
       if (isDigit(c) || (c === '.' && !isFloat)) {
         this.charIndex++
         if (isFloat) {
@@ -286,6 +288,7 @@ class express {
       }
     }
     // integer = isFloat ? parseFloat(integer + '.' + decimalPlaces) : integer
+    console.log(number, 'number');
     return number
   }
 
@@ -381,7 +384,7 @@ class express {
   }
 
   // 匹配字符串
-  matchSting (c: string) {
+  matchString (c: string) {
     let name = ''
     const quotation = c
     this.charIndex++
