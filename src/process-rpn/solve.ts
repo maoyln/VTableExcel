@@ -35,6 +35,7 @@ class Solve {
       globalFunction
     ) as (keyof typeof globalFunction)[]) {
       const fn = globalFunction[v] as [string, (...args: unknown[]) => unknown];
+      console.log(fn, "globalFunction", v);
       this.putVariable(...fn);
     }
   }
@@ -75,6 +76,7 @@ class Solve {
 
   // 逆波兰表达式求值
   evaluate(expr: Token[]): unknown {
+    console.log(expr, "evaluate-expr");
     let left: unknown, right: unknown;
     const _s: unknown[] = [];
     const typeHandleMap: TypeHandleMap = {
@@ -156,6 +158,7 @@ class Solve {
     return { value: undefined };
   }
 
+  // 追加表达式中的变量
   putVariable(key: string, data: unknown): void {
     set(this._variableMap, key, {
       value: data,

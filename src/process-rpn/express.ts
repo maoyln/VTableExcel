@@ -288,7 +288,7 @@ class express {
       }
     }
     // integer = isFloat ? parseFloat(integer + '.' + decimalPlaces) : integer
-    console.log(number, 'number');
+    // console.log(number, 'number');
     return number
   }
 
@@ -301,11 +301,13 @@ class express {
   // 匹配逗号
   matchComma () {
     this.charIndex++
+    // console.log(TOKEN_EOF, 'TOKEN_EOF');
     return this.createToken(TOKEN_EOF, 0)
   }
 
   // 匹配空白字符
   matchSpace (c: string) {
+    // console.log(c, 'c-空白字符');
     this.charIndex++
   }
 
@@ -330,21 +332,28 @@ class express {
 
   // 匹配操作符
   matchOperator (c: string) {
+    // console.log(c, 'c-操作符');
     // 如果当前是- 并且前一位是操作符或者是空 说明当前为负数 并不是操作符
     const operators = ['>=', '!=', '<=', '==']
     let _c = c
     const previousCharacter = this.getPreviousCharacter()
+    // console.log(previousCharacter, 'previousCharacter');
     if (c === '-' && (this.isEOF(previousCharacter) || isOperationalCharacter(previousCharacter!))) {
+      // console.log(c, 'cccc-负数');
       this.charIndex++
       const integer = this.matchingNumber(this.expression[this.charIndex])
+      // console.log(integer, 'integer-负数');
       return this.createToken(TOKEN_NUMBER, '-' + integer)
     } else {
       this.charIndex++
       const str = this.expression[this.charIndex]
       if (isOperator(str) && operators.includes(_c + str)) {
+        // 如果当前字符是操作符 并且下一个字符也是操作符 并且是 >= != <= == 说明是双字符操作符
+        // console.log(str, _c, 'str-操作符-双字符操作符');
         this.charIndex++
         _c += str
       }
+      // console.log(_c, 'c-操作符-最终');
       return this.createToken(TOKEN_OPERATOR, _c)
     }
   }
@@ -366,8 +375,10 @@ class express {
       } else if (c === ':') {
         this.charIndex++;
         let rangeEnd = '';
+        // console.log(c, 'c-范围');
         while (this.charIndex < this.expression.length) {
           c = String(this.expression[this.charIndex]);
+          // console.log(c, 'c-范围-字符');
           if (isAlphaOrLineOrintegerber(c)) {
             this.charIndex++;
             rangeEnd = rangeEnd + c;
@@ -375,6 +386,7 @@ class express {
             break;
           }
         }
+        // console.log(rangeEnd, 'rangeEnd-范围');
         return this.createToken(TOKEN_IDENTIFIER, name + ':' + rangeEnd);
       } else {
         return this.createToken(TOKEN_IDENTIFIER, name);
@@ -387,6 +399,7 @@ class express {
   matchString (c: string) {
     let name = ''
     const quotation = c
+    console.log(c, 'c');
     this.charIndex++
     while (this.charIndex < this.expression.length) {
       c = this.expression[this.charIndex]

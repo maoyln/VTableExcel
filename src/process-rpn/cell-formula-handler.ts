@@ -157,8 +157,8 @@ export function calculateCellFormulaOptimized(
     // 4. 设置到RPN计算器并计算
     RPN.setCellDataBatch(cellData); // 批量设置单元格数据（保存到RPN类似于map对象中）
     const result = RPN.calculate(formula.slice(1)); // 去掉开头的 "=" 符号，进行计算
-    console.log(formula.slice(1), 'formula.slice(1)');
-    console.log(result, 'result');
+    // console.log(formula.slice(1), 'formula.slice(1)');
+    // console.log(result, 'result');
 
     return result as string | number;
   } catch (error) {
