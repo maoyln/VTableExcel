@@ -1,5 +1,6 @@
 /**
  * 全局函数
+ * 加法、平均值、计数、最大值、最小值
  */
 type Func = (
   ...args: (number | string | (number | string | unknown[])[])[]
